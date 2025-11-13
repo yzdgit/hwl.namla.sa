@@ -71,7 +71,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const safeBaseName = (rawBaseName || 'audio-from-video').replace(/[^\u0600-\u06FF\w\-]+/g, '-');
     const format = 'mp3';
     const inputName = 'input_' + Date.now() + '.' + (file.name.split('.').pop() || 'mp4');
-    const outputName = safeBaseName + '_hawil_namla_sa.' + format;
+    const outputName = safeBaseName + '_hwl_namla_sa.' + format;
     setConvertingState(true);
     updateProgress(5);
     try {

@@ -1,6 +1,6 @@
-# Hawil (hawil.namla.sa)
+# hwl (hwl.namla.sa)
 
-Hawil is a lightweight Arabic-first web app that converts any uploaded video into an MP3 audio file directly inside the browser. It uses FFmpeg.wasm, so the media never leaves the user's device, which keeps private files private and avoids slow uploads.
+Hwl is a lightweight Arabic-first web app that converts any uploaded video into an MP3 audio file directly inside the browser. It uses FFmpeg.wasm, so the media never leaves the user's device, which keeps private files private and avoids slow uploads.
 
 ## Features
 - Instant video to audio conversion powered by FFmpeg.js running fully client-side
