@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>حول | تحويل الفيديو إلى صوت </title>
+
+  <!-- SEO Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="حوّل أي فيديو إلى صوت في ثواني. حمّل الصوت الجاهز للواتساب، البودكاست، والمونتاج. خدمة أونلاين، مجانية، وبدون رفع ملفاتك لسيرفر." />
+  <meta name="keywords"
+        content="تحويل فيديو إلى صوت, تحويل فيديو إلى , تحويل مقطع إلى صوت, تحويل ريلز إلى صوت, تحويل تيك توك إلى صوت, بدون برنامج, أونلاين, السعودية" />
+  <link rel="canonical" href="https://hawil.namla.sa/" />
+<link rel="icon" type="image/svg+xml" href="https://cdn.namla.sa/logos/hawil.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="حوّل الفيديو إلى صوت  في ثواني" />
+  <meta property="og:description"
+        content="ارفع الفيديو وحوّله إلى صوت  جاهز للمشاركة أو الاستخدام في أي مشروع. سريع، بسيط، وبدون تسجيل." />
+  <meta property="og:url" content="https://hawil.namla.sa/" />
+  <meta property="og:site_name" content="حول | hawil" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="حوّل الفيديو إلى صوت  أونلاين" />
+  <meta name="twitter:description"
+        content="حوّل مقاطعك إلى صوت  بضغطة زر. مثالي لمقاطع الواتساب، البودكاست، أو الريلز." />
+
+  <!-- Arabic font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'system-ui', 'ui-sans-serif', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              DEFAULT: '#2563EB',
+              dark: '#1D4ED8',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+</head>
+
+<body class="bg-slate-950 text-slate-50 min-h-screen flex flex-col font-sans">
+
+  <header class="border-b border-white/5 bg-slate-950/80 backdrop-blur">
+    <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <div class="h-9 w-9 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/40">
+  <img
+    src="https://cdn.namla.sa/logos/hawil.svg"
+    alt="شعار حول"
+    class="h-6 w-6"
+  />
+</div>
+
+        <div>
+          <div class="font-semibold text-sm tracking-tight">حول من نملة</div>
+          <div class="text-xs text-slate-400">حوّل الفيديو إلى صوت</div>
+        </div>
+      </div>
+      <nav class="hidden sm:flex gap-4 text-xs text-slate-400">
+        <a href="#how" class="hover:text-slate-100 transition-colors">كيف يعمل؟</a>
+        <a href="#faq" class="hover:text-slate-100 transition-colors">الأسئلة الشائعة</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1">
+    <section class="max-w-3xl mx-auto px-4 py-10 space-y-8">
+
+      <!-- Hero -->
+      <div class="space-y-4 text-right">
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-3 py-1 text-[11px] font-medium text-emerald-300">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          يعمل بالكامل في متصفحك – لا يتم رفع ملفاتك إلى الخادم
+        </p>
+
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight">
+          حوّل <span class="text-primary">الفيديو</span> إلى صوت
+          <span class="block text-lg sm:text-xl text-slate-300 mt-2 font-normal">
+            أداة عربية بسيطة تعمل باستخدام FFmpeg.js مباشرة من المتصفح.
+          </span>
+        </h1>
+      </div>
+
+      <!-- Converter Card -->
+      <div
+        class="bg-slate-900/60 border border-white/10 shadow-2xl shadow-primary/10 rounded-3xl p-5 sm:p-6 space-y-4">
+
+        <!-- Status -->
+        <div class="flex items-center justify-between gap-3 text-xs text-slate-400">
+          <div class="flex items-center gap-2">
+            <span id="status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span id="ffmpeg-status">جاري تهيئة محرك التحويل...</span>
+          </div>
+          <span id="progress-label" class="hidden sm:inline"></span>
+        </div>
+
+        <!-- File input -->
+        <label class="block">
+          <span class="text-sm font-medium text-slate-100">ملف الفيديو</span>
+          <div class="mt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <input
+              id="video-input"
+              type="file"
+              accept="video/*"
+              class="flex-1 text-sm file:mr-3 file:py-2 file:px-3 file:rounded-2xl file:border-0
+                     file:text-sm file:font-medium file:bg-primary file:text-white hover:file:bg-primary-dark
+                     cursor-pointer bg-slate-950/60 border border-white/5 rounded-2xl px-3 py-2.5 text-slate-200" />
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">
+            يدعم أغلب صيغ الفيديو الشائعة مثل MP4 و MOV و WebM.
+          </p>
+        </label>
+
+
+
+        <!-- Convert button -->
+        <button
+          id="convert-btn"
+          class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-primary hover:bg-primary-dark
+                 disabled:bg-slate-700 disabled:cursor-not-allowed text-sm font-semibold py-2.5 mt-2 transition-colors">
+          <span id="convert-label">تحويل الفيديو إلى صوت</span>
+          <span id="convert-spinner"
+                class="hidden w-4 h-4 border-2 border-white/40 border-t-transparent rounded-full animate-spin"></span>
+        </button>
+
+        <!-- Progress -->
+        <div id="progress-bar-wrapper" class="hidden mt-3">
+          <div class="flex justify-between text-[11px] text-slate-400 mb-1">
+            <span>التقدم</span>
+            <span id="progress-text">0%</span>
+          </div>
+          <div class="h-1.5 rounded-full bg-slate-800 overflow-hidden">
+            <div id="progress-bar"
+                 class="h-full w-0 rounded-full bg-primary transition-[width] duration-150 ease-out"></div>
+          </div>
+        </div>
+
+        <!-- Error -->
+        <p id="error-message" class="mt-2 text-xs text-rose-400 hidden"></p>
+
+        <!-- Result -->
+        <div id="result-card" class="mt-4 hidden border-t border-white/5 pt-4 space-y-3">
+          <h2 class="text-sm font-semibold text-slate-100">الملف الناتج</h2>
+          <audio id="audio-preview" controls class="w-full"></audio>
+          <a
+            id="download-link"
+            href="#"
+            download
+            class="inline-flex items-center justify-center gap-2 rounded-2xl border border-primary
+                   bg-primary/10 hover:bg-primary/20 text-xs font-semibold px-4 py-2">
+            تحميل الصوت
+          </a>
+          <p class="text-[11px] text-slate-400">
+            يتم إنشاء الملف محليًا في متصفحك. إذا أغلقت الصفحة سيتم حذف الملف.
+          </p>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <section id="how" class="grid sm:grid-cols-3 gap-4 text-sm text-slate-300">
+        <div class="space-y-1">
+          <h3 class="font-semibold text-slate-100 text-sm">1. اختر الفيديو</h3>
+          <p class="text-xs text-slate-400">
+            اسحب ملف الفيديو أو اختره من جهازك. لا يتم رفع الملف إلى أي خادم.
+          </p>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-semibold text-slate-100 text-sm">2. حوّل الفيديو</h3>
+          <p class="text-xs text-slate-400">
+            اضغط زر التحويل وانتظر بضع ثواني حتى يكتمل التحويل داخل متصفحك.
+          </p>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-semibold text-slate-100 text-sm">3. حمّل الصوت</h3>
+          <p class="text-xs text-slate-400">
+            اضغط تحويل، انتظر ثوانٍ، ثم حمّل ملف الصوت الناتج واستمع له.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="space-y-3 text-sm text-slate-300">
+        <h2 class="text-sm font-semibold text-slate-100">الأسئلة الشائعة</h2>
+
+        <details class="bg-slate-900/50 border border-white/5 rounded-2xl px-4 py-3 text-xs">
+          <summary class="cursor-pointer select-none font-semibold text-slate-100">
+            هل يتم رفع الفيديو إلى الخادم؟
+          </summary>
+          <p class="mt-2 text-slate-300">
+            لا، تتم كل عملية التحويل داخل متصفحك باستخدام FFmpeg.wasm. الملفات تبقى على جهازك.
+          </p>
+        </details>
+
+        <details class="bg-slate-900/50 border border-white/5 rounded-2xl px-4 py-3 text-xs">
+          <summary class="cursor-pointer select-none font-semibold text-slate-100">
+            ماذا أفعل إذا لم يعمل التحويل؟
+          </summary>
+          <p class="mt-2 text-slate-300">
+            استخدم آخر إصدار من كروم أو إيدج أو فايرفوكس، وتأكد أن المتصفح يدعم SharedArrayBuffer.
+            جرّب أيضًا تقليل حجم الفيديو أو مدته.
+          </p>
+        </details>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-4 text-[11px] text-slate-500 text-center">
+    <p>© <span id="year"></span> Hawil · مبني باستخدام FFmpeg.wasm و Tailwind CSS.</p>
+  </footer>
+
+    <!-- App Script -->
+  <script>
+    const { createFFmpeg, fetchFile } = FFmpeg;
+    const ffmpeg = createFFmpeg({ log: true });
+
+    const statusEl = document.getElementById('ffmpeg-status');
+    const statusDot = document.getElementById('status-dot');
+    const videoInput = document.getElementById('video-input');
+    const convertBtn = document.getElementById('convert-btn');
+    const convertLabel = document.getElementById('convert-label');
+    const convertSpinner = document.getElementById('convert-spinner');
+    const progressWrapper = document.getElementById('progress-bar-wrapper');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const progressLabel = document.getElementById('progress-label');
+    const errorMessage = document.getElementById('error-message');
+    const resultCard = document.getElementById('result-card');
+    const audioPreview = document.getElementById('audio-preview');
+    const downloadLink = document.getElementById('download-link');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    let ffmpegReady = false;
+
+    async function ensureFFmpegLoaded() {
+      if (ffmpegReady) return;
+      try {
+        statusEl.textContent = 'جاري تحميل محرك التحويل لأول مرة...';
+        await ffmpeg.load();
+        ffmpegReady = true;
+        statusEl.textContent = 'جاهز للتحويل – اختر ملف الفيديو ثم اضغط على زر التحويل.';
+        statusDot.classList.remove('bg-amber-400', 'bg-rose-400');
+        statusDot.classList.add('bg-emerald-400');
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent =
+          'تعذّر تحميل محرك التحويل. جرّب تحديث الصفحة أو استخدام متصفح حديث.';
+        statusDot.classList.remove('bg-amber-400', 'bg-emerald-400');
+        statusDot.classList.add('bg-rose-400');
+        throw err;
+      }
+    }
+
+    function setConvertingState(isConverting) {
+      convertBtn.disabled = isConverting;
+      if (isConverting) {
+        convertLabel.textContent = 'جاري التحويل...';
+        convertSpinner.classList.remove('hidden');
+        progressWrapper.classList.remove('hidden');
+      } else {
+        convertLabel.textContent = 'تحويل الفيديو إلى صوت';
+        convertSpinner.classList.add('hidden');
+      }
+    }
+
+    function updateProgress(p) {
+      const percent = Math.min(100, Math.max(0, Math.round(p)));
+      progressBar.style.width = percent + '%';
+      progressText.textContent = percent + '%';
+      progressLabel.textContent = 'التقدم: ' + percent + '%';
+    }
+
+    async function handleConvert() {
+      errorMessage.classList.add('hidden');
+      errorMessage.textContent = '';
+      resultCard.classList.add('hidden');
+
+      const file = videoInput.files && videoInput.files[0];
+      if (!file) {
+        errorMessage.textContent = 'الرجاء اختيار ملف فيديو أولًا.';
+        errorMessage.classList.remove('hidden');
+        return;
+      }
+
+      const rawBaseName = file.name.replace(/\.[^/.]+$/, '');
+      const safeBaseName = (rawBaseName || 'audio-from-video')
+        .replace(/[^\u0600-\u06FF\w\-]+/g, '-');
+
+      const format = '';
+      const inputName =
+        'input_' + Date.now() + '.' + (file.name.split('.').pop() || 'mp4');
+      const outputName = safeBaseName + '_hawil_namla_sa.' + format;
+
+      setConvertingState(true);
+      updateProgress(5);
+
+      try {
+        await ensureFFmpegLoaded();
+        updateProgress(15);
+
+        await ffmpeg.FS('writeFile', inputName, await fetchFile(file));
+        updateProgress(30);
+
+        const args = [
+          '-i', inputName,
+          '-vn',
+          '-acodec', 'liblame',
+          '-q:a', '2',
+          outputName
+        ];
+
+        await ffmpeg.run(...args);
+        updateProgress(80);
+
+        const data = ffmpeg.FS('readFile', outputName);
+        updateProgress(100);
+
+        ffmpeg.FS('unlink', inputName);
+        ffmpeg.FS('unlink', outputName);
+
+        const mimeType = 'audio/mpeg';
+        const blob = new Blob([data.buffer], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+
+        audioPreview.src = url;
+        downloadLink.href = url;
+        downloadLink.download = outputName;
+
+        resultCard.classList.remove('hidden');
+      } catch (err) {
+        console.error(err);
+        errorMessage.textContent =
+          'حدث خطأ أثناء التحويل. جرّب استخدام ملف أصغر أو متصفح مختلف.';
+        errorMessage.classList.remove('hidden');
+      } finally {
+        setConvertingState(false);
+      }
+    }
+
+    convertBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      handleConvert();
+    });
+
+    ensureFFmpegLoaded().catch(function () {});
+  </script>
+
+</body>
+</html>
