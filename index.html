@@ -229,7 +229,7 @@
       await ffmpeg.FS('writeFile', inputName, await fetchFile(file));
       updateProgress(30);
 
-      await ffmpeg.run('-i', inputName, '-vn', '-acodec', 'liblame', '-q:a', '2', outputName);
+      await ffmpeg.run('-i', inputName, '-vn', '-acodec', 'libmp3lame', '-q:a', '2', outputName);
       updateProgress(80);
 
       const data = ffmpeg.FS('readFile', outputName);
